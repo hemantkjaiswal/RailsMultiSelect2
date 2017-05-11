@@ -1,0 +1,52 @@
+<%= form_for(@author) do |f| %>
+  <% if @author.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@author.errors.count, "error") %> prohibited this author from being saved:</h2>
+
+      <ul>
+      <% @author.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :name %><br>
+    <%= f.text_field :name %>
+  </div>
+
+  <%= fields_for(@author_book) do |ab| %>
+  <div class="field">
+    <%= ab.label "All Books" %><br>
+    <%= collection_select(:books, :id, @all_books, :id, :name, {:selected => @author.books.map(&:id)}, {multiple: true}) %>
+  </div>
+  <% end %>
+
+
+
+
+<%# <%= ab.collection_select(:book_id, Book.all, :id, :name,{include_blank: false, :include_hidden => false, :selected => @author.authorbooks.map(&:id)},
+                              {:multiple => true})%>
+
+<%#<%= collection_select(:ingredient, :supplier_ids, 
+              Supplier.all(:order=>"name ASC"), 
+              :id, :name, {:selected => @ingredient.supplier_ids, :include_blank => true}, {:multiple => true}) %>
+
+
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>
+<script type="text/javascript">
+$(document).ready(function() {
+  $("#books_id").select2({
+    placeholder: "Select Books",
+    width: '28%',
+    allowClear: true,
+    tags: true
+
+  });
+});
+</script> 
